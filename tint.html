@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>TINTS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+/* ===== Header gradient title ===== */
+.tint-title {
+  background: linear-gradient(135deg, #f6b1c3, #e68fa3);
+  color: #f3a6b8; /* フォールバック */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    0 0 6px rgba(255,159,184,0.4),
+    0 0 16px rgba(255,159,184,0.25);
+}
+
+/* ===== Header ===== */
+.site-header {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none; /* 下のカード操作を邪魔しない */
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.35em;
+  opacity: 0.95;
+}
+
+/* サブ文はグラデを外して読みやすく */
+.site-sub {
+  margin: 10px 0 0;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  line-height: 1.8;
+  opacity: 0.75;
+
+  /* tint-title の影響を切る */
+  background: none;
+  -webkit-text-fill-color: unset;
+  color: rgba(255,255,255,0.75);
+  text-shadow: none;
+}
+
+.site-header::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: rgba(255,255,255,0.3);
+  margin: 16px auto 0;
+}
+
+@media (max-width: 600px) {
+  .site-header { top: 20px; }
+}
+
+/* ===== Page base ===== */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+  color: #fff;
+  font-family: "Helvetica Neue", "Noto Sans JP", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Grid ===== */
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  width: 90%;
+  max-width: 700px;
+  aspect-ratio: 1 / 1;
+}
+
+/* ===== Card ===== */
+.card {
+  /* アクセント色（タイプごとに上書き） */
+  --a: 335 45% 75%;
+
+  position: relative;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  transition:
+    transform 0.35s cubic-bezier(.34,1.56,.64,1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.card:hover {
+  transform: scale(1.05) translateY(-6px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.85);
+  border-color: hsla(var(--a) / 0.25);
+}
+
+/* ===== Type colors ===== */
+.card.flat      { --a: 0 0% 88%; }     /* ほぼ白 */
+.card.prominent { --a: 335 45% 75%; }  /* モーヴピンク */
+.card.dark      { --a: 20 32% 70%; }   /* スモーキーブラウン */
+.card.sensitive { --a: 310 12% 78%; }  /* うす紫グレー */
+
+/* ===== Title inside card ===== */
+.card h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.25em;
+  color: hsl(var(--a));
+}
+
+.card h2::after {
+  content:"";
+  display:block;
+  width: 28px;
+  height: 1px;
+  margin: 10px auto 0;
+  background: hsl(var(--a));
+  opacity: .35;
+}
+
+/* ===== Description (accordion) ===== */
+.description {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.8;
+
+  color: rgba(255,255,255,0.78);
+
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.4s;
+}
+
+.card.open .description {
+  opacity: 0.9;
+  max-height: 140px;
+}
+
+/* ===== more link ===== */
+.more {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+  font-size: 12px;
+  opacity: 0;
+  text-decoration: underline;
+  color: hsl(var(--a));
+}
+
+.card.open .more {
+  opacity: 0.65;
+}
+</style>
+</head>
+
+<body>
+  <header class="site-header">
+    <h1 class="tint-title">TINT</h1>
+    <p class="site-sub">
+      乳首の質感や特徴から、<br>あなたに合うティントを見つけてください
+    </p>
+  </header>
+
+  <div class="container">
+    <!-- FLAT -->
+    <div class="card flat" onclick="this.classList.toggle('open')">
+      <h2>FLAT</h2>
+      <div class="description">
+        乳首の表面がなだらかで凹凸が少ない方向け<br>
+        色むらが出にくく、発色が弱い
+      </div>
+      <a class="more" href="flat.html">more</a>
+    </div>
+
+    <!-- PROMINENT -->
+    <div class="card prominent" onclick="this.classList.toggle('open')">
+      <h2>PROMINENT</h2>
+      <div class="description">
+        乳首の形がはっきりしている方向け<br>
+        色が濃く見えやすい
+      </div>
+      <a class="more" href="matte.html">more</a>
+    </div>
+
+    <!-- DARK -->
+    <div class="card dark" onclick="this.classList.toggle('open')">
+      <h2>DARK</h2>
+      <div class="description">
+        乳首の色が深く、赤み・茶みが強い方向け<br>
+        明るい色が浮いて見えることがある
+      </div>
+      <a class="more" href="dark.html">more</a>
+    </div>
+
+    <!-- SENSITIVE -->
+    <div class="card sensitive" onclick="this.classList.toggle('open')">
+      <h2>SENSITIVE</h2>
+      <div class="description">
+        乳首にひりつきや赤みがでやすい方向け<br>
+        温感や摩擦に敏感です
+      </div>
+      <a class="more" href="sensitive.html">more</a>
+    </div>
+  </div>
+</body>
+</html>
